@@ -1,20 +1,13 @@
 const admin = require('firebase-admin');
 
-// ✅ Load service account depending on environment
-let serviceAccount;
-if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-  // From environment variable (deployment)
-  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-} else {
-  // From local file (development)
-  serviceAccount = require('./serviceKeyAccount.json');
-}
+// Railway: Use environment variable for Firebase service account JSON
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
+// Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`
+  databaseURL: "https://<YOUR_FIREBASE_PROJECT>.firebaseio.com"
 });
-
 const db = admin.firestore();
 
 function generateData() {
